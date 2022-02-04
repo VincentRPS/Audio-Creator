@@ -4,7 +4,6 @@ import colorlog
 import discord
 import dotenv
 from discord.commands import ApplicationContext, Option
-from discord.ui import Button, View
 
 try:
     import uvloop
@@ -41,7 +40,6 @@ async def start(
     """
     Record the audio of people in a Voice Channel!
     """
-
     voice = ctx.author.voice
 
     await ctx.defer()
@@ -76,6 +74,7 @@ async def start(
         finished_callback,
         ctx.channel,
     )
+    await ctx.guild.get_member(bot.user.id).edit(nick=f"RECORDING | {bot.user.name}")
 
     await ctx.send_followup("The recording has started!")
     await ctx.send("If you don't want to be recorded, leave the voice channel or mute yourself.")
@@ -89,6 +88,7 @@ async def finished_callback(
         discord.File(audio.file, f"{user_id}.{sink.encoding}")
         for user_id, audio in sink.audio_data.items()
     ]
+    sink.vc.guild.get_member(bot.user.id).edit(nick=f"{bot.user.name}")
     await channel.send(f"Recording has stopped, here is your audio.", files=files)
 
 
@@ -105,26 +105,5 @@ async def stop(ctx: ApplicationContext):
         await ctx.send_followup("Done, audio will be coming shortly...")
     else:
         await ctx.send_followup("Not recording in this guild.")
-
-
-@bot.slash_command()
-async def help(ctx: ApplicationContext):
-    """Get help on a command!"""
-    link = Button(
-        style=discord.ButtonStyle.link,
-        label="Issue Tracker",
-        url="https://github.com/VincentRPS/audio-creator",
-    )
-    view = View(items=link)
-    embed = discord.Embed(
-        color=0x2F3136,
-        title="Help is here!",
-        description="The help menu has came! "
-        "please select the command you need help with.",
-    )
-    embed.add_field(name="/start", value="Starts the Recording")
-    embed.add_field(name="/stop", value="Stops the Recording")
-    await ctx.respond(embed=embed, view=view)
-
 
 bot.run(os.getenv("token"))
