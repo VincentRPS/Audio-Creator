@@ -17,6 +17,7 @@ bot = discord.Bot(
 )
 connections = {}
 dotenv.load_dotenv()
+users = {}
 
 
 @bot.listen("on_guild_join")
@@ -72,6 +73,14 @@ async def start(
     else:
         return await ctx.send_followup("Invalid encoding.")
 
+    for member in vc.members():
+        users[member.id] = member
+        await member.send(
+        "Hey! i have been summoned to this Voice Channel "
+        "to start recording, "
+        "if you don't want to be recorded please leave or mute yourself."
+    )
+
     vc.start_recording(
         sink,
         finished_callback,
@@ -83,6 +92,18 @@ async def start(
     await ctx.send("If you don't want to be recorded, leave the voice channel or mute yourself.")
 
 
+@bot.event
+async def on_voice_state_update(member, before, after):
+    if member in users.items() and after.channel is None:
+        users.pop(member)
+    elif member not in users.items():
+        await member.send(
+        "Hey! i have been summoned to this Voice Channel "
+        "to start recording, "
+        "if you don't want to be recorded please leave or mute yourself."
+    )
+        users[member.id] = member
+
 async def finished_callback(
     sink: discord.sinks.Sink, channel: discord.TextChannel, *args
 ):
@@ -91,6 +112,8 @@ async def finished_callback(
         discord.File(audio.file, f"{user_id}.{sink.encoding}")
         for user_id, audio in sink.audio_data.items()
     ]
+    for user_id in sink.audio_data.items():
+        del users[user_id]
     await sink.vc.guild.get_member(bot.user.id).edit(nick=f"{bot.user.name}")
     await channel.send(f"Recording has stopped, here is your audio.", files=files)
 
