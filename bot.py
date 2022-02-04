@@ -111,7 +111,8 @@ async def start(ctx: commands.Context, encoding: str = "mp3"):
         ctx.channel,
     )
 
-    await ctx.reply("The recording has started!")
+    await ctx.reply("Started recording...")
+    await ctx.reply("If you don't want to be recorded, leave the voice channel or mute yourself.")
 
 
 async def finished_callback(
