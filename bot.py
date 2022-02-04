@@ -1,4 +1,5 @@
 import os
+
 import colorlog
 import discord
 import dotenv
@@ -8,7 +9,7 @@ from discord.ui import Button, View
 
 colorlog.basicConfig(level="INFO", log_colors={"INFO": "green"})
 bot = commands.Bot(
-    command_prefix="audio!",
+    command_prefix=commands.when_mentioned_or("audio!"),
     activity=discord.Activity(name="your audio!", type=discord.ActivityType.listening),
 )
 connections = {}
