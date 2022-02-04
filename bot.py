@@ -7,6 +7,12 @@ from discord.commands import ApplicationContext, Option
 from discord.ext import commands
 from discord.ui import Button, View
 
+try:
+    import uvloop
+    uvloop.install()
+except(ModuleNotFoundError, ImportError):
+    pass
+
 colorlog.basicConfig(level="INFO", log_colors={"INFO": "green"})
 bot = commands.Bot(
     command_prefix=commands.when_mentioned_or("audio!"),
