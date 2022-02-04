@@ -87,7 +87,7 @@ async def finished_callback(
         discord.File(audio.file, f"{user_id}.{sink.encoding}")
         for user_id, audio in sink.audio_data.items()
     ]
-    sink.vc.guild.get_member(bot.user.id).edit(nick=f"{bot.user.name}")
+    await sink.vc.guild.get_member(bot.user.id).edit(nick=f"{bot.user.name}")
     await channel.send(f"Recording has stopped, here is your audio.", files=files)
 
 
