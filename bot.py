@@ -1,3 +1,4 @@
+import os
 import colorlog
 import discord
 import dotenv
@@ -186,4 +187,4 @@ async def help(ctx: commands.Context):
     await ctx.reply(embed=embed, view=view)
 
 
-bot.run("OTM1NzE2MjkxNTgxNDYwNDkw.YfCrtA.HduKeS-7R3Oo_wC_Tg0oVOr5ZLU")
+bot.run(os.getenv("token"))
