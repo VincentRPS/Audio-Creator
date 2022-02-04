@@ -80,7 +80,7 @@ async def start(ctx: commands.Context, encoding: str = "mp3"):
     voice = ctx.author.voice
 
     if not voice:
-        return await ctx.reply("You're not in a vc right now")
+        return await ctx.reply("You're not in a Voice Channel right now")
 
     vc = await voice.channel.connect()
     connections.update({ctx.guild.id: vc})
