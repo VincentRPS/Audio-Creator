@@ -19,6 +19,10 @@ connections = {}
 dotenv.load_dotenv()
 
 
+@bot.listen("on_guild_join")
+async def join(guild: discord.Guild):
+    await bot.get_channel(939042922903519292).send(guild.id + " has just added the bot!")
+
 @bot.slash_command()
 async def start(
     ctx: ApplicationContext,
