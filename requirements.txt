@@ -1,0 +1,4 @@
+py-cord==2.0.0b3
+PyNaCl
+colorlog
+python-dotenv
