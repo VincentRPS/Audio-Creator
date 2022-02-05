@@ -4,6 +4,7 @@ import colorlog
 import discord
 import dotenv
 from discord.commands import ApplicationContext, Option
+from discord.ext import commands
 
 try:
     import uvloop
@@ -12,7 +13,7 @@ except(ModuleNotFoundError, ImportError):
     pass
 
 colorlog.basicConfig(level="INFO", log_colors={"INFO": "green"})
-bot = discord.Bot(
+bot = commands.Bot(
     activity=discord.Activity(name="your audio!", type=discord.ActivityType.listening),
 )
 connections = {}
