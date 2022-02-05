@@ -18,6 +18,7 @@ bot = discord.Bot(
 connections = {}
 dotenv.load_dotenv()
 users = {}
+bot.load_extension("jishaku")
 
 
 @bot.listen("on_guild_join")
